@@ -1,0 +1,168 @@
+/* Wrapper */
+.signin-wrapper {
+  background-color: var(--color-mainBG);
+  min-height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+/* Card */
+.signin-card {
+  background-color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* Left Section */
+.signin-left {
+  flex: 1;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signin-left h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.signin-subtext {
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.signup-link {
+  font-weight: 600;
+  color: #d03939;
+  text-decoration: none;
+}
+.signup-link:hover {
+  color: #444;
+  text-decoration: underline;
+}
+
+/* Form */
+.signin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.signin-input {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease;
+}
+
+.signin-input:focus {
+  border-color: #cc3c3c;
+  outline: none;
+}
+
+.checkbox-label {
+  font-size: 0.9rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Button */
+.signin-submit {
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #cc3c3c;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signin-submit:hover {
+  background-color: #a62d2d;
+}
+
+.signin-invalid {
+  background-color: #dba1a1;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.8;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Right Section - Image (Visible only on large screens) */
+.signin-right {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.4s ease;
+}
+
+.signin-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Fade Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .signin-card {
+    background-color: transparent;
+    box-shadow: none;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .signin-left {
+    padding: 2rem 1.2rem;
+    align-items: center;
+  }
+
+  .signin-right {
+    display: none; /* Hide illustration on small screens */
+  }
+
+  .signin-input,
+  .signin-submit,
+  .signin-invalid {
+    width: 100%;
+    max-width: 100%;
+  }
+}

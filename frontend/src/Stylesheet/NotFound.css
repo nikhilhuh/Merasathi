@@ -1,0 +1,94 @@
+.notfound-wrapper {
+  background-color: var(--color-mainBG);
+  min-height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+/* Card */
+.notfound-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  padding: 3rem 2rem;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Headings */
+.notfound-card h1 {
+  font-size: 5rem;
+  color: #cc3c3c;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.notfound-card h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Paragraph */
+.notfound-card p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Button */
+.notfound-btn {
+  display: inline-block;
+  background-color: #cc3c3c;
+  color: white;
+  cursor: pointer;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.notfound-btn:hover {
+  background-color: #a62d2d;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .notfound-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .notfound-card h1 {
+    font-size: 4rem;
+  }
+
+  .notfound-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .notfound-btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+}

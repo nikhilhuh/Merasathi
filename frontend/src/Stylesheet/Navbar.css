@@ -1,0 +1,137 @@
+.navbar {
+  height: 10svh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--color-heroBG);
+  color: white;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Logo */
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  font-size: 1.2rem;
+}
+
+/* Active link */
+.item-active {
+  transition: color 0.3s ease;
+  color: var(--color-mainBG);
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  cursor: pointer;
+}
+
+/* Default link */
+.item-not-active {
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+.item-not-active:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 1rem;
+}
+.btn-signup,
+.btn-signin {
+  text-align: center;
+  padding: 10px 14px;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+.btn-signup {
+  background-color: var(--color-mainBG);
+  color: black;
+}
+.btn-signup:hover {
+  background-color: beige;
+}
+
+.btn-signin {
+  background-color: white;
+  color: black;
+}
+.btn-signin:hover {
+  background-color: #d4d4d3;
+}
+
+/* Hamburger Icon */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  color: white;
+  z-index: 1100;
+}
+
+/* 🔻 Responsive Design */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    gap: 2rem;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    height: 90svh;
+    width: 100%;
+    background-color: var(--color-heroBG);
+    padding: 1rem 2rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .nav-links.nav-active {
+    display: flex;
+  }
+
+  /* Active link */
+  .item-active {
+    transform: none;
+    color: var(--color-mainBG);
+    text-decoration: underline;
+    text-underline-offset: 8px;
+  }
+
+  .item-not-active:hover {
+    cursor: pointer;
+    transform: none;
+    color: var(--color-mainBG);
+  }
+
+  .buttons {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .nav-links li {
+    width: 100%;
+    text-align: left;
+    padding-left: 0.5rem;
+  }
+}
