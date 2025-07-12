@@ -47,7 +47,7 @@ const Signin = () => {
             setSuccess("");
             localStorage.setItem("user", JSON.stringify(userRes.user));
             setUserDetails(userRes.user);
-            navigate(-1);
+            navigate("/");
           }, 2000);
         } else {
           setError(userRes.message);
