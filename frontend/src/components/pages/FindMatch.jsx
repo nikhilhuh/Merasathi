@@ -2,35 +2,72 @@ import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import ProfileCard from "../Cards/ProfileCard";
 import "../../Stylesheet/FindMatch.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../../context/UserContext";
 import NotSignedIn from "./NotSignedIn";
+import { suggestions } from "../../services/api/apiCalls/suggesstions";
+import ErrorModal from "../Modals/ErrorModal";
 
 const FindMatch = () => {
   const { UserDetails } = useUser();
+  const [originalProfiles, setOriginalProfiles] = useState([]);
+  const [filteredProfiles, setFilteredProfiles] = useState([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const Profiles = [
-    { name: "Neha", age: 26, religion: "Hindu", image: null },
-    { name: "Rahul", age: 23, religion: "Hindi", image: null },
-    { name: "Snehpreet", age: 24, religion: "Punjabi", image: null },
-    { name: "Vikram", age: 27, religion: "Christian", image: null },
-    { name: "Anjali", age: 22, religion: "Muslim", image: null },
-    { name: "Rohit", age: 25, religion: "Bengali", image: null },
-    { name: "Vaishnavi", age: 22, religion: "Hindu", image: null },
-    { name: "Gullu", age: 28, religion: "Hindu", image: null },
-    { name: "Harleen", age: 24, religion: "Punjabi", image: null },
-    { name: "Sehaj", age: 27, religion: "Christian", image: null },
-    { name: "Asma", age: 22, religion: "Muslim", image: null },
-    { name: "Yogesh", age: 25, religion: "Bengali", image: null },
-  ];
-    useEffect(()=> {
-      window.scrollTo(0,0);
-    },[]);
+  // Filter States
+  const [selectedReligion, setSelectedReligion] = useState("");
+  const [ageFrom, setAgeFrom] = useState("");
+  const [ageTo, setAgeTo] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
 
-    if(!UserDetails) return <NotSignedIn />
+  useEffect(() => {
+    const getSuggestions = async () => {
+      if (!UserDetails || loading) return;
+      try {
+        setLoading(true);
+        const response = await suggestions(UserDetails._id);
+        if (response.success) {
+          setOriginalProfiles(response.suggestions);
+          setFilteredProfiles(response.suggestions);
+        } else {
+          setError(response.message || "Error fetching data, try again later.");
+          setTimeout(() => setError(""), 2000);
+        }
+      } catch (err) {
+        setError("Error fetching data, try again later.");
+        setTimeout(() => setError(""), 2000);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getSuggestions();
+  }, [UserDetails]);
+
+  const handleSearch = () => {
+    const filtered = originalProfiles.filter((profile) => {
+      const matchesReligion = selectedReligion
+        ? profile.religion === selectedReligion
+        : true;
+      const matchesGender = selectedGender
+        ? profile.gender?.toLowerCase() === selectedGender.toLowerCase()
+        : true;
+      const matchesAge =
+        (!ageFrom || profile.age >= parseInt(ageFrom)) &&
+        (!ageTo || profile.age <= parseInt(ageTo));
+
+      return matchesReligion && matchesGender && matchesAge;
+    });
+
+    setFilteredProfiles(filtered);
+  };
+
+  if (!UserDetails) return <NotSignedIn />;
 
   return (
     <div>
+      {error && <ErrorModal error={error} />}
       <Navbar />
 
       {/* Hero Section */}
@@ -42,16 +79,18 @@ const FindMatch = () => {
           </p>
 
           <div className="hero-filters">
-            <select id="religion">
+            <select value={selectedReligion} onChange={(e) => setSelectedReligion(e.target.value)}>
               <option value="">Religion</option>
               <option value="Hindu">Hindu</option>
               <option value="Muslim">Muslim</option>
               <option value="Christian">Christian</option>
               <option value="Sikh">Sikh</option>
+              <option value="Jain">Jain</option>
+              <option value="Buddhist">Buddhist</option>
             </select>
 
             <div className="age-range">
-              <select id="age-from">
+              <select value={ageFrom} onChange={(e) => setAgeFrom(e.target.value)}>
                 <option value="">Age From</option>
                 <option value="18">18</option>
                 <option value="20">20</option>
@@ -60,7 +99,7 @@ const FindMatch = () => {
                 <option value="28">28</option>
                 <option value="30">30</option>
               </select>
-              <select id="age-to">
+              <select value={ageTo} onChange={(e) => setAgeTo(e.target.value)}>
                 <option value="">Age To</option>
                 <option value="24">24</option>
                 <option value="27">27</option>
@@ -70,24 +109,34 @@ const FindMatch = () => {
               </select>
             </div>
 
-            <select id="gender">
+            <select value={selectedGender} onChange={(e) => setSelectedGender(e.target.value)}>
               <option value="">Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Others</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
 
-            <button className="search-btn">Search</button>
+            <button className="search-btn" onClick={handleSearch}>Search</button>
           </div>
         </div>
       </section>
 
       <div className="container">
-        <div className="matches-profile">
-          {Profiles.map((profile, index) => (
-            <ProfileCard key={index} profile={profile} />
-          ))}
-        </div>
+        {loading ? (
+          <div>
+            {/* loader will come here */}
+          </div>
+        ) : (
+          <div className="matches-profile">
+            {filteredProfiles.length === 0 ? (
+              <p className="no-results">No matches found for selected filters.</p>
+            ) : (
+              filteredProfiles.map((profile, index) => (
+                <ProfileCard key={index} profile={profile} setError={setError} />
+              ))
+            )}
+          </div>
+        )}
       </div>
 
       <Footer />

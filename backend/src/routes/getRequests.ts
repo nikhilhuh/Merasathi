@@ -33,16 +33,18 @@ router.get("/", async (req: Request, res: Response) => {
         return;
       }
 
-      data = user.requests.map((req: any) => ({
-        from: {
-          name: req.from?.name,
-          age: req.from?.dateOfBirth ? calculateAge(req.from.dateOfBirth) : null,
-          gender: req.from?.gender,
-          profileImage: req.from?.profileImage,
-          email: req.from?.email,
-        },
-        status: req.status,
-      }));
+      data = user.requests
+        .filter((req: any) => req.from) // ensure populated
+        .map((req: any) => ({
+          _id: req.from._id,
+          name: req.from.name,
+          age: req.from.dateOfBirth ? calculateAge(req.from.dateOfBirth) : null,
+          gender: req.from.gender,
+          profileImage: req.from.profileImage,
+          religion: req.from.religion,
+          location: req.from.location,
+          status: req.status,
+        }));
     }
 
     if (type === "sent") {
@@ -54,13 +56,13 @@ router.get("/", async (req: Request, res: Response) => {
         const req = u.requests.find((r: any) => r.from.toString() === userId);
         if (req) {
           data.push({
-            to: {
-              name: u.name,
-              age: u.dateOfBirth ? calculateAge(u.dateOfBirth) : null,
-              gender: u.gender,
-              profileImage: u.profileImage,
-              email: u.email,
-            },
+            _id: u._id,
+            name: u.name,
+            age: u.dateOfBirth ? calculateAge(u.dateOfBirth) : null,
+            gender: u.gender,
+            profileImage: u.profileImage,
+            religion: u.religion,
+            location: u.location,
             status: req.status,
           });
         }

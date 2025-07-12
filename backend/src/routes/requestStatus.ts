@@ -5,12 +5,12 @@ const router = express.Router();
 
 router.put("/", async (req: Request, res: Response) => {
   try {
-    const { toUserEmail, fromUserId, status } = req.body;
+    const { toUserId, fromUserId, status } = req.body;
 
-    if (!toUserEmail || !fromUserId || !status) {
+    if (!toUserId || !fromUserId || !status) {
       res.status(400).json({
         success: false,
-        message: "toUserEmail, fromUserId, and status are required.",
+        message: "toUserId, fromUserId, and status are required.",
       });
       return;
     }
@@ -24,7 +24,7 @@ router.put("/", async (req: Request, res: Response) => {
     }
 
     // Find the user by email (receiver)
-    const user = await userModel.findOne({ email: toUserEmail });
+    const user = await userModel.findOne({ _id: toUserId });
     if (!user) {
       res.status(404).json({
         success: false,

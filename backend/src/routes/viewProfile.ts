@@ -5,17 +5,17 @@ const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const { email } = req.query as { email?: string };
+    const { userId } = req.query as { userId?: string };
 
-    if (!email) {
+    if (!userId) {
       res.status(400).json({
         success: false,
-        message: "Email is required.",
+        message: "User id is required.",
       });
       return;
     }
 
-    const user = await userModel.findOne({ email }).select(
+    const user = await userModel.findOne({ _id: userId }).select(
       "-password -requests -__v -createdAt -updatedAt"
     );
 

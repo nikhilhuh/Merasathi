@@ -6,6 +6,7 @@ import NotFound from "./components/pages/NotFound";
 import FindMatch from "./components/pages/FindMatch";
 import MyMatch from "./components/pages/MyMatch";
 import Profile from "./components/pages/Profile";
+import ViewProfile from "./components/pages/ViewProfile";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/findmatch" element={<FindMatch />} />
         <Route path="/mymatches" element={<MyMatch />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/user/:userId" element={<ViewProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

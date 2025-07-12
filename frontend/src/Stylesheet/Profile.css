@@ -1,129 +1,164 @@
-.profile-container {
-  max-width: 1000px;
+.profile-page {
+  max-width: 1200px;
   margin: 2rem auto;
-  padding: 2rem 2.5rem;
-  border-radius: 16px;
   font-family: "Segoe UI", sans-serif;
+  padding: 1rem;
 }
 
-.profile-heading {
+.profile-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
   text-align: center;
-  color: #cc3c3c;
-  margin-bottom: 2.5rem;
-  font-size: 2.5rem;
-}
-
-.profile-header p {
-  font-size: 1rem;
-  color: #777;
-}
-
-.profile-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.8rem;
-}
-
-.profile-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.profile-item label {
-  font-weight: 600;
-  color: #6a3c3c;
-  margin-bottom: 0.3rem;
-}
-
-.profile-item p {
-  background-color: #fff;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 1rem;
-  border: 1px solid #eee;
   color: #333;
 }
 
-.profile-item input,
-.profile-item select,
-.profile-item textarea {
-  padding: 10px 14px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.profile-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
   background-color: #fff;
-  transition: border-color 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.profile-item input:focus,
-.profile-item select:focus,
-.profile-item textarea:focus {
-  border-color: #cc3c3c;
-  outline: none;
-}
-
-.profile-item textarea {
-  resize: none;
-  min-height: 80px;
-}
-
-.profile-actions {
-  margin-top: 2.5rem;
+.card-header {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  height: auto;
+  margin-bottom: 12px;
+}
+
+.card-header h3,
+.card-header h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.card-header p {
+  margin: 0.3rem 0;
+  color: #777;
+}
+
+.edit-button {
+  background: #cc3c3c;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 12px;
+  display: flex;
+  gap: 4px;
+}
+
+.profile-image-info {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.profile-avatar {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #cc3c3c33;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+.profile-info {
+  text-align: left;
+}
+.card-content {
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.card-content > div {
+  font-size: 1rem;
+  max-width: 600px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  text-align: left;
+}
+
+.card-content strong {
+  display: inline-block;
+  min-width: 140px;
+  color: #333;
+}
+
+input,
+select,
+textarea {
+  margin-left: 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  flex-grow: 1;
+  min-width: 200px;
+  background-color: #fdfdfd;
+}
+
+textarea {
+  resize: vertical;
+  width: 100%;
+  margin-left: 0;
+  margin-top: 0.4rem;
+  resize: none;
+}
+
+.edit-buttons {
+  display: flex;
   gap: 1rem;
 }
 
-.btn {
-  padding: 12px 20px;
-  font-size: 1rem;
+.cancel-btn,
+.save-btn {
+  padding: 8px 16px;
   font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.btn.edit {
-  background-color: #cc3c3c;
-  color: #fff;
+.cancel-btn {
+  background-color: #888;
+  color: white;
 }
 
-.btn.save {
+.save-btn {
   background-color: #28a745;
   color: white;
 }
 
-.btn.cancel {
-  background-color: #6c757d;
-  color: white;
-}
-
-.btn:hover {
-  transform: scale(1.02);
-  opacity: 0.95;
-}
-
-/* Full width for long fields */
-.profile-item.full {
-  grid-column: span 2;
-}
-
-/* Responsive layout */
-@media (max-width: 768px) {
-  .profile-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 600px) {
+  .profile-avatar {
+    width: 60px;
+    height: 60px;
   }
 
-  .profile-item.full {
-    grid-column: span 1;
+  .card-content strong {
+    min-width: 100px;
   }
 
-  .profile-container {
-    padding: 1.5rem;
+  input,
+  select {
+    width: 100%;
+    margin: 0.5rem 0 0 0;
   }
 
-  .profile-heading {
-    font-size: 1.8rem;
+  .card-content {
+    flex-direction: column;
   }
+
 }

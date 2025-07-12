@@ -11,19 +11,24 @@ router.post("/", async (req: Request, res: Response) => {
         message: "Please provide all required fields.",
       });
       return;
-    } 
-      //  check if the user exists or not
-      let user = await userModel.findOne({ email }).select("-createdAt -updatedAt -__v -password -requests");
-      if (!user) {
-        res.status(400).json({
-          success: false,
-          message: "User with this email does not exist.",
-        });
-        return;
-      } 
-      res.status(200).json({success: true, user , message: "User fetched successfully."});
+    }
+    //  check if the user exists or not
+    let user = await userModel
+      .findOne({ email })
+      .select("-createdAt -updatedAt -__v -password")
+      .populate("requests.from", "_id");
+
+    if (!user) {
+      res.status(400).json({
+        success: false,
+        message: "User with this email does not exist.",
+      });
       return;
-    
+    }
+    res
+      .status(200)
+      .json({ success: true, user, message: "User fetched successfully." });
+    return;
   } catch (error) {
     console.error("Error fetching user:", error);
     res.status(500).json({ success: false, message: "Internal server error." });

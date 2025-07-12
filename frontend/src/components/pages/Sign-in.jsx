@@ -8,10 +8,11 @@ import { Eye, EyeClosed } from "lucide-react";
 import SuccessModal from "../Modals/SuccessModal";
 import ErrorModal from "../Modals/ErrorModal";
 import { useUser } from "../../context/UserContext";
+import AlreadySignedIn from "./AlreadySignedIn";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const { setUserDetails } = useUser();
+  const { UserDetails, setUserDetails } = useUser();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [credentials, setCredentials] = useState({
@@ -21,9 +22,9 @@ const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-    useEffect(()=> {
-      window.scrollTo(0,0);
-    },[])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const isFormValid =
     credentials.userEmail.trim() !== "" &&
@@ -41,12 +42,12 @@ const Signin = () => {
       if (response.success) {
         const userRes = await fetchUser(credentials.userEmail);
         if (userRes.success) {
-          localStorage.setItem("user", JSON.stringify(userRes.user));
-          setUserDetails(userRes.user);
           setSuccess("You are now signed in.");
           setTimeout(() => {
             setSuccess("");
-            navigate("/");
+            localStorage.setItem("user", JSON.stringify(userRes.user));
+            setUserDetails(userRes.user);
+            navigate(-1);
           }, 2000);
         } else {
           setError(userRes.message);
@@ -69,6 +70,8 @@ const Signin = () => {
       setLoading(false);
     }
   };
+
+  if (UserDetails) return <AlreadySignedIn />;
 
   return (
     <div className="signin-wrapper">

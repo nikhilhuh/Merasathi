@@ -5,38 +5,66 @@ import Footer from "../Layout/Footer";
 import ProfileCard from "../Cards/ProfileCard";
 import { useUser } from "../../context/UserContext";
 import NotSignedIn from "./NotSignedIn";
+import ErrorModal from "../Modals/ErrorModal";
+import { getRequests } from "../../services/api/apiCalls/getRequests";
 
 const MyMatch = () => {
   const { UserDetails } = useUser();
-  const Profiles = [
-    { name: "Neha", age: 26, religion: "Hindu", image: null },
-    { name: "Rahul", age: 23, religion: "Hindi", image: null },
-    { name: "Snehpreet", age: 24, religion: "Punjabi", image: null },
-    { name: "Vikram", age: 27, religion: "Christian", image: null },
-    { name: "Anjali", age: 22, religion: "Muslim", image: null },
-    { name: "Rohit", age: 25, religion: "Bengali", image: null },
-    { name: "Vaishnavi", age: 22, religion: "Hindu", image: null },
-    { name: "Gullu", age: 28, religion: "Hindu", image: null },
-    { name: "Harleen", age: 24, religion: "Punjabi", image: null },
-    { name: "Sehaj", age: 27, religion: "Christian", image: null },
-    { name: "Asma", age: 22, religion: "Muslim", image: null },
-    { name: "Yogesh", age: 25, religion: "Bengali", image: null },
-  ];
+  const [error, setError] = useState("");
+  const [activeTab, setActiveTab] = useState("sent"); // "sent" or "received"
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [loading, setLoading] = useState(false);
+  const [originalProfiles, setOriginalProfiles] = useState([]);
+  const [filteredProfiles, setFilteredProfiles] = useState([]);
+
+  useEffect(() => {
+    const getMyRequests = async () => {
+      if (!UserDetails) return;
+      try {
+        setLoading(true);
+        const response = await getRequests(UserDetails._id, activeTab);
+        if (response.success) {
+          setOriginalProfiles(response.requests);
+          setFilteredProfiles(response.requests); // initially unfiltered
+        } else {
+          setError(response.message || "Failed to load your match requests.");
+          setTimeout(() => setError(""), 2000);
+        }
+      } catch (err) {
+        setError("Failed to load your match requests.");
+        setTimeout(() => setError(""), 2000);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getMyRequests();
+  }, [UserDetails, activeTab]);
+
+  useEffect(() => {
+    if (activeFilter === "All") {
+      setFilteredProfiles(originalProfiles);
+    } else {
+      const filtered = originalProfiles.filter((item) => {
+        return item.status?.toLowerCase() === activeFilter.toLowerCase();
+      });
+      setFilteredProfiles(filtered);
+    }
+  }, [activeFilter, originalProfiles]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const [activeTab, setActiveTab] = useState("sent");
-  const [activeFilter, setActiveFilter] = useState("All");
 
   if (!UserDetails) return <NotSignedIn />;
 
   return (
     <div>
+      {error && <ErrorModal error={error} />}
       <Navbar />
       <div className="container">
         <div className="upper-section">
-          {/* Main Menu Tabs */}
+          {/* Tabs */}
           <div className="main-tabs">
             <button
               onClick={() => setActiveTab("sent")}
@@ -52,7 +80,7 @@ const MyMatch = () => {
             </button>
           </div>
 
-          {/* Sub Filters */}
+          {/* Filters */}
           <div className="filters">
             {["All", "Accepted", "Rejected", "Pending"].map((filter) => (
               <div
@@ -66,14 +94,25 @@ const MyMatch = () => {
           </div>
         </div>
 
+        {/* Profiles */}
         <div className="matches-profile">
-          {Profiles.map((profile, index) => (
-            <ProfileCard key={index} profile={profile} />
-          ))}
+          {loading ? (
+            <>{/* loader will come here */}</>
+          ) : filteredProfiles.length === 0 ? (
+            <p>No requests found.</p>
+          ) : (
+            filteredProfiles.map((profile, index) => {
+              return (
+                <ProfileCard
+                  key={index}
+                  profile={profile}
+                  setError={setError}
+                />
+              );
+            })
+          )}
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

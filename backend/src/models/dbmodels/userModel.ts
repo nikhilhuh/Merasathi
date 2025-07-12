@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     profession: { type: String },
     income: { type: String },
     maritalStatus: { type: String },
-    profileImage: { type: String },
+    profileImage: { type: String , default: "https://lh3.googleusercontent.com/a/default-user"},
     bio: { type: String },
 
     preferences: {

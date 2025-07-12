@@ -10,13 +10,13 @@ const Navbar = () => {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(()=> {
-    if(menuOpen) {
+  useEffect(() => {
+    if (menuOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  } ,[menuOpen])
+  }, [menuOpen]);
 
   const menuItems = [
     { label: "HOME", path: "/" },
@@ -54,9 +54,19 @@ const Navbar = () => {
         ))}
         {!UserDetails && (
           <div className="buttons">
-          <button onClick={() => handleNavigate("/signup")} className="btn-signup">Signup</button>
-          <button onClick={() => handleNavigate("/signin")} className="btn-signin">Signin</button>
-        </div>
+            <button
+              onClick={() => handleNavigate("/signup")}
+              className="btn-signup"
+            >
+              Signup
+            </button>
+            <button
+              onClick={() => handleNavigate("/signin")}
+              className="btn-signin"
+            >
+              Signin
+            </button>
+          </div>
         )}
       </ul>
     </nav>

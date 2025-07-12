@@ -30,7 +30,17 @@ router.put("/", async (req: Request, res: Response) => {
       new: true,
     });
 
-    res.status(200).json({ success: true, message: "User profile updated successfully" });
+    let updatedUser = await userModel
+      .findOne({ _id: userId })
+      .select("-createdAt -updatedAt -__v -password -requests");
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        user: updatedUser,
+        message: "User profile updated successfully",
+      });
   } catch (err) {
     console.error("Error updating profile:", err);
     res.status(500).json({

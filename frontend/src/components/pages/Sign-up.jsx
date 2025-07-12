@@ -7,7 +7,7 @@ import SuccessModal from "../Modals/SuccessModal";
 import { signup } from "../../services/api/apiCalls/signup";
 import { Eye, EyeClosed } from "lucide-react";
 import { useUser } from "../../context/UserContext";
-import NotSignedIn from "./NotSignedIn";
+import AlreadySignedIn from "./AlreadySignedIn";
 
 const Signup = () => {
   const { UserDetails } = useUser(); 
@@ -63,12 +63,7 @@ const Signup = () => {
     credentials.userEmail.trim() !== "" &&
     credentials.userPassword.trim() !== "";
 
-    if(UserDetails){
-      return (
-        <NotSignedIn />
-      )
-    }
-
+    if(UserDetails) return <AlreadySignedIn />
 
   return (
     <div className="signup-wrapper">

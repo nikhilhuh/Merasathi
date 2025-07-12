@@ -5,18 +5,18 @@ const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    const { fromUserId, toUserEmail } = req.body;
+    const { fromUserId, toUserId } = req.body;
 
-    if (!fromUserId || !toUserEmail) {
+    if (!fromUserId || !toUserId) {
       res.status(400).json({
         success: false,
-        message: "Both fromUserId and toUserEmail are required.",
+        message: "Both fromUserId and toUserId are required.",
       });
       return;
     }
 
     const fromUser = await userModel.findOne({ _id: fromUserId });
-    const toUser = await userModel.findOne({ email: toUserEmail });
+    const toUser = await userModel.findOne({ _id: toUserId });
 
     if (!fromUser || !toUser) {
       res.status(404).json({
