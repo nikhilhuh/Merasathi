@@ -1,20 +1,61 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import signUpImg from "../../assets/images/ImgSign.svg";
 import "../../Stylesheet/Sign-up.css";
-import Navbar from "../Layout/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ErrorModal from "../Modals/ErrorModal";
+import SuccessModal from "../Modals/SuccessModal";
+import { signup } from "../../services/api/apiCalls/signup";
+import { Eye, EyeClosed } from "lucide-react";
+import { useUser } from "../../context/UserContext";
+import NotSignedIn from "./NotSignedIn";
 
 const Signup = () => {
+  const { UserDetails } = useUser(); 
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [credentials, setCredentials] = useState({
     userName: "",
     userEmail: "",
     userPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  useEffect(()=> {
+    window.scrollTo(0,0);
+  },[])
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isFormValid) return;
-    console.log(credentials);
+    if (!isFormValid || loading) return;
+    try {
+      setLoading(true);
+      const response = await signup(
+        credentials.userName,
+        credentials.userEmail,
+        credentials.userPassword
+      );
+      if (response.success) {
+        setSuccess("Registered successfully, you can now log in");
+        setTimeout(() => {
+          setSuccess("");
+          navigate("/signin");
+        }, 2000);
+      } else {
+        setError(response.message || "Something went wrong, try again later");
+        setTimeout(() => {
+          setError("");
+        }, 2000);
+      }
+    } catch (err) {
+      setError("Something went wrong, try again later");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isFormValid =
@@ -22,8 +63,17 @@ const Signup = () => {
     credentials.userEmail.trim() !== "" &&
     credentials.userPassword.trim() !== "";
 
+    if(UserDetails){
+      return (
+        <NotSignedIn />
+      )
+    }
+
+
   return (
     <div className="signup-wrapper">
+      {error && <ErrorModal error={error} />}
+      {success && <SuccessModal success={success} />}
       <div className="signup-card">
         <div className="signup-left">
           <h2>Create Account</h2>
@@ -59,28 +109,36 @@ const Signup = () => {
               required
               autoComplete="email"
             />
-            <input
-              type="password"
-              name="userPassword"
-              placeholder="Password"
-              value={credentials.userPassword}
-              onChange={(e) =>
-                setCredentials({
-                  ...credentials,
-                  userPassword: e.target.value,
-                })
-              }
-              className="signup-input"
-              required
-              autoComplete="current-password"
-            />
+            <div className="password-wrapper">
+              <input
+                type={`${showPassword ? "text" : "password"}`}
+                name="userPassword"
+                placeholder="Password"
+                value={credentials.userPassword}
+                onChange={(e) =>
+                  setCredentials({
+                    ...credentials,
+                    userPassword: e.target.value,
+                  })
+                }
+                className="signup-input-password"
+                required
+                autoComplete="current-password"
+              />
+              <div
+                className="eye"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <EyeClosed /> : <Eye />}
+              </div>
+            </div>
 
             <button
-              disabled={!isFormValid}
+              disabled={!isFormValid || loading}
               type="submit"
-              className={isFormValid ? "signup-submit" : "signup-invalid"}
+              className={isFormValid || loading ? "signup-submit" : "signup-invalid"}
             >
-              Sign Up
+              {loading? "Signing you up..." : "Signup"}
             </button>
           </form>
         </div>

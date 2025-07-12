@@ -2,8 +2,10 @@ import "../../Stylesheet/Navbar.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useUser } from "../../context/UserContext";
 
 const Navbar = () => {
+  const { UserDetails } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -50,10 +52,12 @@ const Navbar = () => {
             {item.label}
           </li>
         ))}
-        <div className="buttons">
+        {!UserDetails && (
+          <div className="buttons">
           <button onClick={() => handleNavigate("/signup")} className="btn-signup">Signup</button>
           <button onClick={() => handleNavigate("/signin")} className="btn-signin">Signin</button>
         </div>
+        )}
       </ul>
     </nav>
   );

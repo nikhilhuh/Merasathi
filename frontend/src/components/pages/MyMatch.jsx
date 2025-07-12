@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../Stylesheet/MyMatch.css";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import ProfileCard from "../Cards/ProfileCard";
+import { useUser } from "../../context/UserContext";
+import NotSignedIn from "./NotSignedIn";
 
 const MyMatch = () => {
+  const { UserDetails } = useUser();
   const Profiles = [
     { name: "Neha", age: 26, religion: "Hindu", image: null },
     { name: "Rahul", age: 23, religion: "Hindi", image: null },
@@ -19,9 +22,14 @@ const MyMatch = () => {
     { name: "Asma", age: 22, religion: "Muslim", image: null },
     { name: "Yogesh", age: 25, religion: "Bengali", image: null },
   ];
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const [activeTab, setActiveTab] = useState("sent");
   const [activeFilter, setActiveFilter] = useState("All");
+
+  if (!UserDetails) return <NotSignedIn />;
 
   return (
     <div>
@@ -30,10 +38,16 @@ const MyMatch = () => {
         <div className="upper-section">
           {/* Main Menu Tabs */}
           <div className="main-tabs">
-            <button onClick={()=> setActiveTab("sent")} className={activeTab === "sent" ? "active" : ""}>
+            <button
+              onClick={() => setActiveTab("sent")}
+              className={activeTab === "sent" ? "active" : ""}
+            >
               Sent Requests
             </button>
-            <button onClick={()=> setActiveTab("received")} className={activeTab === "received" ? "active" : ""}>
+            <button
+              onClick={() => setActiveTab("received")}
+              className={activeTab === "received" ? "active" : ""}
+            >
               Received Requests
             </button>
           </div>
@@ -54,7 +68,7 @@ const MyMatch = () => {
 
         <div className="matches-profile">
           {Profiles.map((profile, index) => (
-            <ProfileCard key={index} profile={profile}/>
+            <ProfileCard key={index} profile={profile} />
           ))}
         </div>
       </div>

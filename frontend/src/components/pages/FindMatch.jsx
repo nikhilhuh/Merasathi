@@ -2,8 +2,13 @@ import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import ProfileCard from "../Cards/ProfileCard";
 import "../../Stylesheet/FindMatch.css";
+import { useEffect } from "react";
+import { useUser } from "../../context/UserContext";
+import NotSignedIn from "./NotSignedIn";
 
 const FindMatch = () => {
+  const { UserDetails } = useUser();
+
   const Profiles = [
     { name: "Neha", age: 26, religion: "Hindu", image: null },
     { name: "Rahul", age: 23, religion: "Hindi", image: null },
@@ -18,6 +23,11 @@ const FindMatch = () => {
     { name: "Asma", age: 22, religion: "Muslim", image: null },
     { name: "Yogesh", age: 25, religion: "Bengali", image: null },
   ];
+    useEffect(()=> {
+      window.scrollTo(0,0);
+    },[]);
+
+    if(!UserDetails) return <NotSignedIn />
 
   return (
     <div>

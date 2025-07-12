@@ -2,6 +2,8 @@ import { useState } from "react";
 import "../../Stylesheet/Profile.css";
 import Footer from "../Layout/Footer";
 import Navbar from "../Layout/Navbar";
+import { useUser } from "../../context/UserContext";
+import NotSignedIn from "./NotSignedIn";
 
 const mockUser = {
   name: "Rahul Sharma",
@@ -32,6 +34,7 @@ const mockUser = {
 };
 
 const Profile = () => {
+  const { UserDetails } = useUser();
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState(mockUser);
 
@@ -58,6 +61,8 @@ const Profile = () => {
   };
 
   const displayOrNA = (val) => val || "N/A";
+
+  if(!UserDetails) return <NotSignedIn />
 
   return (
     <>

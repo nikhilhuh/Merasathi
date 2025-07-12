@@ -74,14 +74,30 @@
   border-color: #cc3c3c;
   outline: none;
 }
-
-.checkbox-label {
-  font-size: 0.9rem;
-  color: #555;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.password-wrapper {
+  width: 100%;
   max-width: 400px;
+  position: relative;
+}
+.signup-input-password {
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 40px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease;
+}
+.signup-input-password:focus {
+  border-color: #cc3c3c;
+  outline: none;
+}
+.eye{
+  position: absolute;
+  top: 20%;
+  right: 12px;
+  cursor: pointer;
 }
 
 /* Buttons */
