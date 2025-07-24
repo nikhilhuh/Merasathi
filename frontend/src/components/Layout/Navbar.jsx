@@ -33,43 +33,45 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar">
-      <div onClick={() => handleNavigate("/")} className="logo">
-        MERA SATHI
-      </div>
-
-      <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? <X size={24} /> : <Menu size={24} />}
-      </div>
-
-      <ul className={`nav-links ${menuOpen ? "nav-active" : ""}`}>
-        {menuItems.map((item, index) => (
-          <li
-            onClick={() => handleNavigate(item.path)}
-            key={index}
-            className={isActive(item.path) ? "item-active" : "item-not-active"}
-          >
-            {item.label}
-          </li>
-        ))}
-        {!UserDetails && (
-          <div className="buttons">
-            <button
-              onClick={() => handleNavigate("/signup")}
-              className="btn-signup"
+    <div className="navbar-container">
+      <nav className="navbar">
+        <div onClick={() => handleNavigate("/")} className="logo">
+          MERA SATHI
+        </div>
+      
+        <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+        </div>
+      
+        <ul className={`nav-links ${menuOpen ? "nav-active" : ""}`}>
+          {menuItems.map((item, index) => (
+            <li
+              onClick={() => handleNavigate(item.path)}
+              key={index}
+              className={isActive(item.path) ? "item-active" : "item-not-active"}
             >
-              Signup
-            </button>
-            <button
-              onClick={() => handleNavigate("/signin")}
-              className="btn-signin"
-            >
-              Signin
-            </button>
-          </div>
-        )}
-      </ul>
-    </nav>
+              {item.label}
+            </li>
+          ))}
+          {!UserDetails && (
+            <div className="buttons">
+              <button
+                onClick={() => handleNavigate("/signup")}
+                className="btn-signup"
+              >
+                Signup
+              </button>
+              <button
+                onClick={() => handleNavigate("/signin")}
+                className="btn-signin"
+              >
+                Signin
+              </button>
+            </div>
+          )}
+        </ul>
+      </nav>
+    </div>
   );
 };
 
